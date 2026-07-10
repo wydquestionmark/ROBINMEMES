@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/api/images",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
+}
