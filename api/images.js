@@ -32,6 +32,7 @@ module.exports = async function handler(request, response) {
 
     if (!driveResponse.ok) {
       console.error("Google Drive API error:", data);
+
       return response.status(driveResponse.status).json({
         error:
           data?.error?.message ||
@@ -46,10 +47,10 @@ module.exports = async function handler(request, response) {
       createdTime: file.createdTime,
       modifiedTime: file.modifiedTime,
 
-      // High-resolution image URL.
-      url: `https://drive.google.com/uc?export=view&id=${file.id}`,
+      // Full-size image served through our own API route
+      url: `/api/image?id=${file.id}`,
 
-      // Google-hosted thumbnail. Change w1600 to a smaller/larger value as needed.
+      // Thumbnail shown in the gallery
       thumbnailUrl: `https://drive.google.com/thumbnail?id=${file.id}&sz=w1600`,
     }));
 
@@ -59,8 +60,10 @@ module.exports = async function handler(request, response) {
     );
 
     return response.status(200).json(images);
+
   } catch (error) {
     console.error(error);
+
     return response.status(500).json({
       error: "The server could not contact Google Drive.",
     });
